@@ -38,8 +38,20 @@ class Post extends CI_Model{
         $this->db->limit($limit, $offset);
         $this->db->order_by('published_at', 'desc');
         $query = $this->db->get($this->table);
-
-        return $query->result_array();
+        //return $query->result_array();
+        foreach ($query->result_array() as $post) {
+            $postId = $post["id"];
+            $arrItems["items"][$postId]["id"] = $post["id"];
+            $arrItems["items"][$postId]["title"] = $post["title"];
+            $arrItems["items"][$postId]["slug"] = $post["slug"];
+            $arrItems["items"][$postId]["featured_image"] = $post["featured_image"];
+            $arrItems["items"][$postId]["username"] = $post["username"];
+            $arrItems["items"][$postId]["published_at"] = $post["published_at"];
+            $arrItems["items"][$postId]["tags"] = $this->getAllTags($postId);
+            $arrItems["items"][$postId]["preview_body"] = $post["preview_body"];
+            $arrItems["items"][$postId]["hidden_body"] = $post["body"];
+            }
+            return $arrItems;
 	}
 
 	function find_by_category($slug,$limit = null, $offset = 0){
@@ -52,8 +64,22 @@ class Post extends CI_Model{
 		$this->db->group_by('pc.post_id');
 		$this->db->order_by('p.published_at','desc');
 		$posts = $this->db->get('posts_categories pc',$limit,$offset)->result_array();
-		return $posts;
-	}
+                foreach ($posts as $post) {
+                    $postId = $post["id"];
+                    $arrItems["items"][$postId]["id"] = $post["id"];
+                    $arrItems["items"][$postId]["title"] = $post["title"];
+                    $arrItems["items"][$postId]["slug"] = $post["slug"];
+                    $arrItems["items"][$postId]["featured_image"] = $post["featured_image"];
+                    $arrItems["items"][$postId]["username"] = $post["username"];
+                    $arrItems["items"][$postId]["published_at"] = $post["published_at"];
+                    $arrItems["items"][$postId]["tags"] = $this->getAllTags($postId);
+                    $arrItems["items"][$postId]["preview_body"] = $post["preview_body"];
+                    $arrItems["items"][$postId]["hidden_body"] = $post["body"];
+                    //echo $post["id"]." ---- ".$post["title"]."<br/>";
+                }
+                //return $posts;
+                return $arrItems;
+        }
 
 	function find_by_tag($slug,$limit = null, $offset = 0){
 		$this->db->select('p.*,u.username');
@@ -65,17 +91,39 @@ class Post extends CI_Model{
 		$this->db->group_by('pc.post_id');
 		$this->db->order_by('p.published_at','desc');
 		$posts = $this->db->get('posts_tags pc',$limit,$offset)->result_array();
-		return $posts;
-	}
+                foreach ($posts as $post) {
+                    $postId = $post["id"];
+                    $arrItems["items"][$postId]["id"] = $post["id"];
+                    $arrItems["items"][$postId]["title"] = $post["title"];
+                    $arrItems["items"][$postId]["slug"] = $post["slug"];
+                    $arrItems["items"][$postId]["featured_image"] = $post["featured_image"];
+                    $arrItems["items"][$postId]["username"] = $post["username"];
+                    $arrItems["items"][$postId]["published_at"] = $post["published_at"];
+                    $arrItems["items"][$postId]["tags"] = $this->getAllTags($postId);
+                    $arrItems["items"][$postId]["preview_body"] = $post["preview_body"];
+                    $arrItems["items"][$postId]["hidden_body"] = $post["body"];
+                    //echo $post["id"]." ---- ".$post["title"]."<br/>";
+                }
+                //return $posts;
+                return $arrItems;
+        }
 
 	function create($post){
-		$post['slug'] = url_title($post['title'],'-',true);
-		$post['body'] = trim(preg_replace('/\s\s+/', ' ',$post['body']));
+            //$post['slug'] = url_title($post['title'], '-', true);    
+            $rus = array('А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я');
+            $lat = array('A', 'B', 'V', 'G', 'D', 'E', 'E', 'Gh', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', 'C', 'Ch', 'Sh', 'Sch', 'Y', 'Y', 'Y', 'E', 'Yu', 'Ya', 'a', 'b', 'v', 'g', 'd', 'e', 'e', 'gh', 'z', 'i', 'y', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'ch', 'sh', 'sch', 'y', 'y', 'y', 'e', 'yu', 'ya');
+            $post['slug'] = strtolower(str_replace(" ", "-", str_replace($rus, $lat, $post['title'])));
+            $post['preview_body'] = trim(preg_replace('/\s\s+/', ' ', $post['preview_body']));
+        $post['body'] = trim(preg_replace('/\s\s+/', ' ',$post['body']));
 		$this->db->insert($this->table, $post);
 	}
 
 	function update($post,$id){
-		$post['slug'] = url_title($post['title'],'-',true);
+            //$post['slug'] = url_title($post['title'], '-', true);
+            $rus = array('А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я');
+            $lat = array('A', 'B', 'V', 'G', 'D', 'E', 'E', 'Gh', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', 'C', 'Ch', 'Sh', 'Sch', 'Y', 'Y', 'Y', 'E', 'Yu', 'Ya', 'a', 'b', 'v', 'g', 'd', 'e', 'e', 'gh', 'z', 'i', 'y', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'ch', 'sh', 'sch', 'y', 'y', 'y', 'e', 'yu', 'ya');
+            $post['slug'] = strtolower(str_replace(" ", "-", str_replace($rus, $lat, $post['title'])));
+            $post['preview_body'] = trim(preg_replace('/\s\s+/', ' ', $post['preview_body']));
 		$post['body'] = trim(preg_replace('/\s\s+/', ' ',$post['body']));
 		$this->db->where('id',$id);
 		$this->db->update($this->table,$post);
@@ -109,5 +157,13 @@ class Post extends CI_Model{
 		
 		return $all_urls;
 	}
+        function getAllTags($idPost) {
+            $this->db->select('tags.name, tags.slug');
+            $this->db->join('posts_tags', 'posts_tags.tag_id = tags.id');
+            $this->db->where("posts_tags.post_id = $idPost");
+            $this->db->where("tags.status = 1");
+            $tags = $this->db->get('tags')->result_array();
+            return $tags;
+    }
 
 }

@@ -1,5 +1,5 @@
 <?php if(!empty($posts)):?>
-  <?php foreach($posts as $post):?>
+  <?php foreach($posts["index"] as $post): $tags = $post["tags"];?>
   <div class="panel panel-default"><!-- Post -->
       <?php if(!empty($post['featured_image'])):?>
       <div class="panel-img">
@@ -13,7 +13,25 @@
       <div class="panel-footer">
         <div class="post-meta">
           <span class="text-left"><i class="fa fa-calendar"></i> <?php echo date('d M Y',strtotime($post['published_at']))?> 
-          <!-- <i class="fa fa-bars"></i> <a href="#">Web Design</a>, <a href="#">Bootstrap</a></span>  -->
+<?php if (count($tags) > 1) : ?>
+                            <?php
+                            $array_keys = array_keys($tags);
+                            $last_key = end($array_keys);
+                            reset($tags);
+                            foreach ($tags as $key => $tag) :
+                                ?>
+                                <i class="fa fa-bars"></i> <a href="<?php echo site_url('tag/'.$tag['slug'])?>"><?php echo $tag["name"]; ?></a>
+                                <?php
+                                if ($key != $last_key) {
+                                    echo ', ';
+                                }
+                                ?>
+                            </span>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <i class="fa fa-bars"></i> <a href="<?php echo site_url('tag/'.$tag['slug'])?>"><?php echo $tag["name"]; ?></a>
+                    <?php endif; ?>
+                <!-- <i class="fa fa-bars"></i> <a href="#">Web Design</a>, <a href="#">Bootstrap</a></span>  -->
           <!-- <span class="pull-right"><a href="single.html"><i class="fa fa-comments"></i> 23 Comments</a></span> -->
         </div>
       </div>

@@ -14,6 +14,10 @@
                         <input type="text" name="title" class="form-control" id="post_name" placeholder="Title" value="<?php echo set_value('title');?>">
                     </div>
                     <div class="form-group">
+                        <label for="preview_body">Prev. Body</label>
+                        <textarea name="preview_body" class="form-control txteditor" id="preview_body" placeholder="Preview body" rows="10"><?php echo set_value('preview_body'); ?></textarea>
+                    </div>
+                    <div class="form-group">
                         <label for="post_body">Body</label>
                         <textarea name="body" class="form-control txteditor" id="post_body" placeholder="Body" rows="10"><?php echo set_value('body');?></textarea>
                     </div>
@@ -86,13 +90,16 @@
 <!-- Line Control WYSIWYG -->
 <script src="<?php echo $base_assets_url;?>plugins/line_control_editor/editor.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-    $("button:submit").click(function(){
-        $('.txteditor').text($('.txteditor').Editor("getText"));
-    });
+                        $(document).ready(function () {
+                            $("button:submit").click(function () {
+                                $('#post_body').text($('.txteditor').Editor("getText"));
+                                $('#preview_body').text($('.txteditor').Editor("getText"));
+                            });
 
-    var editor = $(".txteditor").Editor();
-    $('.txteditor').Editor("setText", "<?php echo !empty($post['body']) ? addslashes($post['body']) :'';?>");        
-})
+                            var editor = $("#post_body").Editor();
+                            var editor = $("#preview_body").Editor();
+                            $('#post_body').Editor("setText", "<?php echo!empty($post['body']) ? addslashes($post['body']) : ''; ?>");
+                            $('#preview_body').Editor("setText", "<?php echo!empty($post['preview_body']) ? addslashes($post['preview_body']) : ''; ?>");
+                        })
     
 </script>

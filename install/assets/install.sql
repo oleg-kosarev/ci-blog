@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `assets` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `assets`
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `assets_posts` (
   PRIMARY KEY (`id`),
   KEY `fk_assets_posts_posts1` (`post_id`),
   KEY `fk_assets_posts_assets1` (`asset_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `slug` varchar(255) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `categories`
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `menus` (
   `position` int(11) NOT NULL,
   `type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `menus`
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `methods` (
   `path` varchar(255) NOT NULL,
   `parent_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `methods_groups` (
   PRIMARY KEY (`id`),
   KEY `fk_methods_groups_groups1` (`group_id`),
   KEY `fk_methods_groups_methods1` (`method_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -210,6 +210,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
+  `preview_body` text,
   `body` text,
   `type` varchar(100) NOT NULL,
   `featured_image` varchar(255) DEFAULT NULL,
@@ -219,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `posts`
@@ -244,7 +245,7 @@ CREATE TABLE IF NOT EXISTS `posts_categories` (
   PRIMARY KEY (`id`),
   KEY `fk_posts_categories_categories1` (`category_id`),
   KEY `fk_posts_categories_posts1` (`post_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `posts_categories`
@@ -272,7 +273,7 @@ CREATE TABLE IF NOT EXISTS `posts_tags` (
   PRIMARY KEY (`id`),
   KEY `fk_posts_tags_tags1` (`tag_id`),
   KEY `fk_posts_tags_posts1` (`post_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `posts_tags`
@@ -297,7 +298,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `value` text NOT NULL,
   `description` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `settings`
@@ -326,7 +327,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `slug` varchar(255) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `tags`
