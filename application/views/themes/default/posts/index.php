@@ -1,5 +1,5 @@
 <?php if(!empty($posts)):?>
-  <?php foreach($posts["index"] as $post): $tags = $post["tags"];?>
+  <?php foreach($posts["items"] as $post): $tags = $post["tags"];?>
   <div class="panel panel-default"><!-- Post -->
       <?php if(!empty($post['featured_image'])):?>
       <div class="panel-img">
